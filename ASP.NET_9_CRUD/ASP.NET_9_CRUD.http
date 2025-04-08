@@ -1,0 +1,6 @@
+@ASP.NET_9_CRUD_HostAddress = http://localhost:5024
+
+GET {{ASP.NET_9_CRUD_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
