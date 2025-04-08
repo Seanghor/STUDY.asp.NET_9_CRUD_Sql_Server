@@ -27,7 +27,7 @@ namespace ASP.NET_9_CRUD.Controllers
            new VideoGame
            {
                 Id = 2,
-                Title = "Adventure Quest",
+                Title = "Adventure Quest Ar",
                 Platform = "PS4",
                 Developer = "Game Studio",
                 Publisher = "Big Games Inc."
