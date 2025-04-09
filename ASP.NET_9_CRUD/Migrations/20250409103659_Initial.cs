@@ -5,13 +5,13 @@
 namespace ASP.NET_9_CRUD.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration  // this name is get after we have run :"Add-Migration Initial"
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "VideoGames",   //the name "VideoGames" we get from :  public DbSet<VideoGame> VideoGames => Set<VideoGame>(); in file 'VideoGameDbContext"
+                name: "VideoGames",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)

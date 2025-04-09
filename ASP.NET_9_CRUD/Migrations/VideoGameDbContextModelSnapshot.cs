@@ -77,30 +77,6 @@ namespace ASP.NET_9_CRUD.Migrations
                             Platform = "Xbox",
                             Publisher = "Turbo Media",
                             Title = "Racing Rivals"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Developer = "Galaxy Studios",
-                            Platform = "PS5",
-                            Publisher = "Cosmic Entertainment",
-                            Title = "Space Odyssey"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Developer = "Survival Games",
-                            Platform = "PC",
-                            Publisher = "Apocalypse Studios",
-                            Title = "Zombie Defense"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Developer = "Fantasy Makers",
-                            Platform = "PS4",
-                            Publisher = "DreamWorks Entertainment",
-                            Title = "Fantasy World"
                         });
                 });
 #pragma warning restore 612, 618

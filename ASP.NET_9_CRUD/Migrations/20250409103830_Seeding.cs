@@ -20,10 +20,7 @@ namespace ASP.NET_9_CRUD.Migrations
                     { 1, "Seanghor", "PS5", "Sony Interactive Entertainment", "Test" },
                     { 2, "Game Studio", "PS4", "Big Games Inc.", "Adventure Quest" },
                     { 3, "Epic Developers", "PC", "Super Games Co.", "Battle Royale" },
-                    { 4, "SpeedWorks", "Xbox", "Turbo Media", "Racing Rivals" },
-                    { 5, "Galaxy Studios", "PS5", "Cosmic Entertainment", "Space Odyssey" },
-                    { 6, "Survival Games", "PC", "Apocalypse Studios", "Zombie Defense" },
-                    { 7, "Fantasy Makers", "PS4", "DreamWorks Entertainment", "Fantasy World" }
+                    { 4, "SpeedWorks", "Xbox", "Turbo Media", "Racing Rivals" }
                 });
         }
 
@@ -49,21 +46,6 @@ namespace ASP.NET_9_CRUD.Migrations
                 table: "VideoGames",
                 keyColumn: "Id",
                 keyValue: 4);
-
-            migrationBuilder.DeleteData(
-                table: "VideoGames",
-                keyColumn: "Id",
-                keyValue: 5);
-
-            migrationBuilder.DeleteData(
-                table: "VideoGames",
-                keyColumn: "Id",
-                keyValue: 6);
-
-            migrationBuilder.DeleteData(
-                table: "VideoGames",
-                keyColumn: "Id",
-                keyValue: 7);
         }
     }
 }

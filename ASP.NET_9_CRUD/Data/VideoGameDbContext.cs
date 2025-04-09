@@ -5,7 +5,7 @@ namespace ASP.NET_9_CRUD.Data
     public class VideoGameDbContext(DbContextOptions<VideoGameDbContext> options): DbContext(options)
     {
         //public DbSet<VideoGame> VideoGames { get; set; }   //define like this: VideoGames could be null
-        public DbSet<VideoGame> VideoGames => Set<VideoGame>();
+        public DbSet<VideoGame> VideoGames => Set<VideoGame>();  //VideoGames  --> name of table
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -43,31 +43,8 @@ namespace ASP.NET_9_CRUD.Data
                         Platform = "Xbox",
                         Developer = "SpeedWorks",
                         Publisher = "Turbo Media"
-                    },
-                    new VideoGame
-                    {
-                        Id = 5,
-                        Title = "Space Odyssey",
-                        Platform = "PS5",
-                        Developer = "Galaxy Studios",
-                        Publisher = "Cosmic Entertainment"
-                    },
-                    new VideoGame
-                    {
-                        Id = 6,
-                        Title = "Zombie Defense",
-                        Platform = "PC",
-                        Developer = "Survival Games",
-                        Publisher = "Apocalypse Studios"
-                    },
-                    new VideoGame
-                    {
-                        Id = 7,
-                        Title = "Fantasy World",
-                        Platform = "PS4",
-                        Developer = "Fantasy Makers",
-                        Publisher = "DreamWorks Entertainment"
-                    });
+                    }
+                );
         }
     }
 }

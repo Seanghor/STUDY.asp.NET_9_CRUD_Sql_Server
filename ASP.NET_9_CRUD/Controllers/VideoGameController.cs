@@ -1,138 +1,89 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿
+using ASP.NET_9_CRUD.Data;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ASP.NET_9_CRUD.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VideoGameController : ControllerBase
+    public class VideoGameController(VideoGameDbContext context) : ControllerBase
     {
-        private readonly ILogger<VideoGameController> _logger;
+        //Inject data context  --> we can access database
+        private readonly VideoGameDbContext _context = context;
 
-        public VideoGameController(ILogger<VideoGameController> logger)
-        {
-            _logger = logger;
-        }
-
-        static private List<VideoGame> videoGames = new List<VideoGame>()
-        {
-           new VideoGame
-           {
-                Id = 1,
-                Title = "Test",
-                Platform = "PS5",
-                Developer = "Seanghor",
-                Publisher = "Sony Interactive Entertainment"
-           },
-           new VideoGame
-           {
-                Id = 2,
-                Title = "Adventure Quest Ar",
-                Platform = "PS4",
-                Developer = "Game Studio",
-                Publisher = "Big Games Inc."
-           },
-            new VideoGame
-            {
-                Id = 3,
-                Title = "Battle Royale",
-                Platform = "PC",
-                Developer = "Epic Developers",
-                Publisher = "Super Games Co."
-            },
-            new VideoGame
-            {
-                Id = 4,
-                Title = "Racing Rivals",
-                Platform = "Xbox",
-                Developer = "SpeedWorks",
-                Publisher = "Turbo Media"
-            },
-            new VideoGame
-            {
-                Id = 5,
-                Title = "Space Odyssey",
-                Platform = "PS5",
-                Developer = "Galaxy Studios",
-                Publisher = "Cosmic Entertainment"
-            },
-            new VideoGame
-            {
-                Id = 6,
-                Title = "Zombie Defense",
-                Platform = "PC",
-                Developer = "Survival Games",
-                Publisher = "Apocalypse Studios"
-            },
-            new VideoGame
-            {
-                Id = 7,
-                Title = "Fantasy World",
-                Platform = "PS4",
-                Developer = "Fantasy Makers",
-                Publisher = "DreamWorks Entertainment"
-            }
-
-        };
-
-        //Get All 
+        //-- Get All ---
         [HttpGet]
-        public ActionResult<List<VideoGame>> GetVideoGames()
+        public async Task<ActionResult<List<VideoGame>>> GetVideoGames()
         {
+            var videoGames = await _context.VideoGames.ToListAsync();
+            for (int i = 0; i < videoGames.Count; i++)
+            {
+                var videoGame = videoGames[i];
+                Console.WriteLine($"Video Game {i + 1}: {videoGame.Title}"); 
+
+            }
             return Ok(videoGames);
+            //return Ok(await _context.VideoGames.ToListAsync());
         }
 
-        //Get One
+
+        //-- Get One
         [HttpGet("getOne/{id}")]  //base/getOne/id
-        public ActionResult<VideoGame> GetOneVideoGame(int id)
+        public async Task<ActionResult<VideoGame>> GetOneVideoGameById(int id)
         {
             Console.WriteLine(">>>>>>>>>> Get VideoGame ID:" + id);
-            //_logger.LogInformation("Getting VideoGame with ID: {Id}", id);
-            var videoGame = videoGames.FirstOrDefault(item => item.Id == id);
+            var exitVideoGame = await _context.VideoGames.FindAsync(id);
 
-            if(videoGame is null)
+            if (exitVideoGame is null)
                 return NotFound();
-            return Ok(videoGame);
+            return Ok(exitVideoGame);
         }
 
-        //Create 
+
+        // -- Create 
         [HttpPost]
-        public ActionResult<VideoGame> CreateVideoGame(VideoGame newItem)
+        public async Task<ActionResult<VideoGame>> CreateVideoGame(VideoGame newItem)
         {
             if (newItem == null)
                 return BadRequest();
-            int maxId = videoGames.Max(item => item.Id);
-            newItem.Id = maxId + 1;
-            //add item into array
-            videoGames.Add(newItem);
-            return CreatedAtAction(nameof(GetOneVideoGame), new { id = newItem.Id }, newItem);
+            _context.VideoGames.Add(newItem);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetOneVideoGameById), new { id = newItem.Id }, newItem);
         }
 
-        //Update:
-        [HttpPut("{id}")]
-        //IActionResult : not return anything
-        public IActionResult UpdateVideoGameById(int id, VideoGame updatedVideoGame)
+
+        //-- Update 
+        [HttpPatch("update/{id}")]  //base/update/id
+        public async Task<IActionResult> UpdateVideoGameById(int id, VideoGame updatedGame)
         {
-            var videoGame = videoGames.FirstOrDefault(item => item.Id == id);
-            if (videoGame is null)
+            Console.WriteLine(">>>>>>>>>> Update VideoGame ID:" + id);
+            var exitVideoGame = await _context.VideoGames.FindAsync(id);
+
+            if (exitVideoGame is null)
                 return NotFound();
-            //videoGame = updatedVideoGame;
-            videoGame.Title = updatedVideoGame.Title;
-            videoGame.Platform = updatedVideoGame.Platform;
-            videoGame.Developer = updatedVideoGame.Developer;
-            videoGame.Publisher = updatedVideoGame.Publisher;
+            exitVideoGame.Title = updatedGame.Title;
+            exitVideoGame.Platform = updatedGame.Platform;
+            exitVideoGame.Publisher = updatedGame.Publisher;
+            exitVideoGame.Developer = updatedGame.Developer;
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 
 
-        //Delete
-        [HttpDelete("{id}")]
-        public IActionResult DeleteOneVideoGameById(int id)
+
+        //-- Delete
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteVideoGameById(int id)
         {
-            var existVideoGame = videoGames.FirstOrDefault(item => item.Id == id);
-            if (existVideoGame is null)
+            var existingGame = await _context.VideoGames.FindAsync(id);
+            Console.WriteLine(">>>>>>>>>> Delete VideoGame ID:" + id);
+            Console.WriteLine("VideoGame ID:" + existingGame);
+            if (existingGame is null)
                 return NotFound();
-            videoGames.Remove(existVideoGame);
+            _context.VideoGames.Remove(existingGame);
+            await _context.SaveChangesAsync();
             return NoContent();
         }
     }
